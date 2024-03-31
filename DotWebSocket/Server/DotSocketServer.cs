@@ -261,10 +261,10 @@ namespace DotWebSocket.Server
                 wshc.CachedBuffer = wshc.CachedBuffer == null ? decoded : wshc.CachedBuffer.Concat(decoded).ToArray();
             }
 
+            wshc._rawData = decoded;
             if (opcode == (int)Opcode.Binary)
             {
                 wshc._stringData = null;
-                wshc._rawData = decoded;
                 wshc._isBinary = true;
                 
                 GetBehavior(wshc._path)?.OnMessage(wshc);
@@ -274,7 +274,6 @@ namespace DotWebSocket.Server
             {
                 
                 wshc._stringData = Encoding.UTF8.GetString(decoded);
-                wshc._rawData = null;
                 wshc._isBinary = false;
                 
                 GetBehavior(wshc._path)?.OnMessage(wshc);
